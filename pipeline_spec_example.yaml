@@ -1,0 +1,43 @@
+version: 1.0
+pipelines:
+  - name: "Customer_Data_Pipeline"
+    nodes:
+      - type: "Ingestion"
+        name: "customer_data_df"
+        connector: "PostgreSQL"
+        config:
+          host: "db.example.com"
+          port: 5432
+          database: "customer_data"
+          table: "customers"
+      - type: "Transformation"
+        name: "customer_data_cleaned_df"
+        transformation: "Clean_Data"
+        input_df: "customer_data_df"
+      - type: "Sink"
+        sink_type: "Snowflake"
+        input_df: "customer_data_cleaned_df"
+        config:
+          account: "my_snowflake_account"
+          database: "my_snowflake_database"
+          schema: "my_snowflake_schema"
+          table: "customer_data_final"
+  - name: "Website_Traffic_Pipeline"
+    nodes:
+      - type: "Ingestion"
+        name: "website_traffic_df"
+        connector: "S3"
+        config:
+          bucket: "my_website_data_bucket"
+          prefix: "website_traffic/"
+      - type: "Transformation"
+        name: "website_traffic_aggregated_df"
+        transformation: "Aggregate_Data"
+        input_df: "website_traffic_df"
+      - type: "Sink"
+        sink_type: "BigQuery"
+        input_df: "website_traffic_aggregated_df"
+        config:
+          project: "my_bigquery_project"
+          dataset: "website_data"
+          table: "website_traffic_summary"

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Builder</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="toolbar">
+            <h1>Pipeline Builder</h1>
+            <div class="actions">
+                <input type="text" id="pipeline-name" placeholder="Pipeline name" value="My_Pipeline">
+                <button id="btn-save">Save</button>
+                <button id="btn-load">Load</button>
+                <button id="btn-export">Export YAML</button>
+                <button id="btn-run" class="primary">Run Pipeline</button>
+            </div>
+        </header>
+
+        <div class="workspace">
+            <aside class="palette">
+                <h2>Nodes</h2>
+                <p class="hint">Drag a node onto the canvas</p>
+                <div class="node-template" draggable="true" data-type="Ingestion">
+                    <span class="badge ingestion">I</span>
+                    <span>Ingestion</span>
+                </div>
+                <div class="node-template" draggable="true" data-type="Transformation">
+                    <span class="badge transformation">T</span>
+                    <span>Transformation</span>
+                </div>
+                <div class="node-template" draggable="true" data-type="Sink">
+                    <span class="badge sink">S</span>
+                    <span>Sink</span>
+                </div>
+            </aside>
+
+            <main class="canvas-area">
+                <div id="canvas" class="canvas">
+                    <div class="canvas-placeholder">Drag nodes here to build your pipeline</div>
+                </div>
+            </main>
+
+            <aside class="inspector">
+                <h2>Configuration</h2>
+                <p class="hint" id="inspector-hint">Select a node to configure it</p>
+                <form id="node-form" class="hidden">
+                    <div class="form-group">
+                        <label for="node-name">Node Name</label>
+                        <input type="text" id="node-name" placeholder="e.g. customer_data_df">
+                    </div>
+
+                    <div class="form-group" id="connector-group">
+                        <label for="node-connector">Connector</label>
+                        <select id="node-connector"></select>
+                    </div>
+
+                    <div class="form-group" id="transformation-group">
+                        <label for="node-transformation">Transformation</label>
+                        <select id="node-transformation"></select>
+                    </div>
+
+                    <div class="form-group" id="sink-type-group">
+                        <label for="node-sink-type">Sink Type</label>
+                        <select id="node-sink-type"></select>
+                    </div>
+
+                    <div class="form-group" id="input-df-group">
+                        <label for="node-input-df">Input DataFrame</label>
+                        <select id="node-input-df"></select>
+                    </div>
+
+                    <div id="dynamic-fields"></div>
+
+                    <div class="form-actions">
+                        <button type="button" id="btn-delete-node" class="danger">Delete Node</button>
+                    </div>
+                </form>
+            </aside>
+        </div>
+    </div>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="modal-close" class="modal-close">&times;</span>
+            <h2 id="modal-title">Output</h2>
+            <pre id="modal-body"></pre>
+        </div>
+    </div>
+
+    <div id="load-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close" data-close="load-modal">&times;</span>
+            <h2>Saved Pipelines</h2>
+            <ul id="saved-specs-list"></ul>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

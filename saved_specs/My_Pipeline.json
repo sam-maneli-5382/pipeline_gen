@@ -1,0 +1,35 @@
+{
+  "name": "My_Pipeline",
+  "saved_at": "2026-09-26T05:29:36.847554Z",
+  "spec": {
+    "version": "1.0",
+    "pipelines": [
+      {
+        "name": "My_Pipeline",
+        "nodes": [
+          {
+            "type": "Ingestion",
+            "name": "ingestion_1_df",
+            "connector": "S3",
+            "config": {
+              "bucket": "commoncrawl"
+            }
+          },
+          {
+            "type": "Transformation",
+            "name": "transformation_2_df",
+            "transformation": "Aggregate_Data",
+            "input_df": "ingestion_1_df"
+          },
+          {
+            "type": "Sink",
+            "name": "sink_3_df",
+            "sink_type": "Snowflake",
+            "input_df": "transformation_2_df",
+            "config": {}
+          }
+        ]
+      }
+    ]
+  }
+}
